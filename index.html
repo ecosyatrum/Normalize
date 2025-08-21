@@ -11,14 +11,14 @@
   <!-- Social Media Meta Tags (Open Graph & Twitter) -->
   <meta property="og:title" content="M41T - A Creative Portfolio">
   <meta property="og:description" content="Shaping thoughts frame by frame. Explore a fusion of creativity, logic, and digital flow.">
-  <meta property="og:image" content="2.jpg"> <!-- Replace with a link to a representative image -->
-  <meta property="og:url" content="#"> <!-- Replace with the actual URL of the page -->
+  <meta property="og:image" content="2.jpg">
+  <meta property="og:url" content="#">
   <meta property="og:type" content="website">
   
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="M41T - A Creative Portfolio">
   <meta name="twitter:description" content="Shaping thoughts frame by frame. Explore a fusion of creativity, logic, and digital flow.">
-  <meta name="twitter:image" content="2.jpg"> <!-- Replace with a link to a representative image -->
+  <meta name="twitter:image" content="2.jpg">
 
   <style>
     /* --- CSS Organization & Best Practices --- */
@@ -63,9 +63,10 @@
       transition: transform 0.2s cubic-bezier(0.19, 1, 0.22, 1), background 0.2s, border 0.2s, width 0.3s ease, height 0.3s ease;
       transform: translate(-50%, -50%);
     }
+    /* ENHANCED: Made the active state larger */
     .cursor-follower.active {
-      width: 50px; height: 50px; background: rgba(255, 255, 255, 0.25);
-      transform: translate(-50%, -50%) scale(1.2);
+      width: 60px; height: 60px; background: rgba(255, 255, 255, 0.25);
+      transform: translate(-50%, -50%) scale(1.3);
     }
     
     /* --- Preloader --- */
@@ -108,7 +109,7 @@
       padding: 0 2rem; z-index: 800;
       transition: background-color 0.4s ease, backdrop-filter 0.4s ease, border-bottom 0.4s ease;
     }
-    header.scrolled {
+        header.scrolled {
       background-color: rgba(10, 10, 10, 0.5); backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
@@ -152,11 +153,12 @@
     .social-icons a:hover { color: #999; transform: translateY(-5px); }
     
     /* --- General Section Styling & Animation --- */
+    /* ENHANCED: Increased the starting offset for a more noticeable animation */
     .animated-section {
       padding: 5rem 2rem; position: relative; z-index: 5;
-      opacity: 0; transform: translateY(80px) scale(0.95);
-      filter: blur(10px);
-      transition: opacity 1s cubic-bezier(0.25, 1, 0.3, 1), transform 1s cubic-bezier(0.25, 1, 0.3, 1), filter 1s cubic-bezier(0.25, 1, 0.3, 1);
+      opacity: 0; transform: translateY(100px) scale(0.9);
+      filter: blur(15px);
+      transition: opacity 1.2s cubic-bezier(0.25, 1, 0.3, 1), transform 1.2s cubic-bezier(0.25, 1, 0.3, 1), filter 1.2s cubic-bezier(0.25, 1, 0.3, 1);
     }
     .animated-section.is-visible {
       opacity: 1; transform: translateY(0) scale(1); filter: blur(0);
@@ -201,8 +203,7 @@
       border-radius: 12px; object-fit: cover; vertical-align: middle;
       transition-delay: inherit !important;
     }
-    
-    /* --- Clients Section --- */
+        /* --- Clients Section --- */
     .clients h2 { font-size: clamp(2rem, 6vw, 4rem); font-weight: 800; margin-bottom: 2rem; text-align: center; }
     .client-card { position: relative; overflow: hidden; border-radius: 20px; margin-bottom: 2rem; will-change: transform; }
     .client-card video { width: 100%; border-radius: 20px; transition: transform 0.6s ease; }
@@ -305,7 +306,7 @@
       position: absolute; top: 50%; left: 50%; width: 100%; height: 100%;
       object-fit: cover; transform: translate(-50%, -50%); z-index: -1; filter: brightness(0.4);
     }
-    #particles {
+        #particles {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%;
       z-index: 0; pointer-events: none;
     }
@@ -456,7 +457,7 @@
         transition: none;
       }
     }
-  </style>
+      </style>
 </head>
 <body>
 
@@ -464,7 +465,7 @@
   <div class="grain-overlay"></div>
 
   <div class="preloader" id="preloader"><div class="loader"></div></div>
-  <video class="bg-video" autoplay muted loop playsinline preload="auto"><source src="1.mp4" type="video/mp4"></video>
+  <video class="bg-video" autoplay muted loop playsinline preload="metadata" poster="1.jpg"><source src="1.mp4" type="video/mp4"></video>
   
   <header id="header">
     <a href="#" class="logo">M41T</a>
@@ -514,8 +515,7 @@
         <button class="arrow-btn" data-magnetic aria-label="Next Client">&#8594;</button>
       </div>
     </section>
-        
-    <section class="tagline-section animated-section">
+        <section class="tagline-section animated-section">
       <div class="tagline-logo">⌘</div>
       <h1>
         More than a <span>student</span> —  
@@ -657,7 +657,7 @@
       </div>
       <div class="footer-lines"></div>
     </footer>
-    <section id="showcase-intro" class="animated-section">
+        <section id="showcase-intro" class="animated-section">
       <div class="product-showcase-container">
           <video id="bg-video" autoplay muted loop playsinline preload="auto"><source src="11.mp4" type="video/mp4"></video>
           <canvas id="particles"></canvas>
@@ -695,6 +695,21 @@
       const closeMenuBtn = document.getElementById("closeMenu");
       const menuOverlay = document.getElementById("menuOverlay");
       const menuLinks = menuOverlay.querySelectorAll('a');
+      const cardName = document.querySelector(".client-name"); // Cache client name element
+
+      // --- Backend Connection ---
+      // Fetch data from the backend API to prove connection
+      fetch('/api/message')
+        .then(response => response.json())
+        .then(data => {
+          console.log('Data from backend:', data);
+          // Update the client name with data from the backend
+          if (cardName && data.clientName) {
+            cardName.textContent = data.clientName.toUpperCase();
+          }
+        })
+        .catch(error => console.error('Error fetching from backend:', error));
+
 
       // --- Preloader and page load animation ---
       window.addEventListener('load', () => {
@@ -735,7 +750,6 @@
                             }
                         })
                         .catch(console.error);
-                    // Remove listener after first click to avoid repeated requests
                     document.body.removeEventListener('click', requestPermission);
                 });
             } else {
@@ -773,8 +787,9 @@
                 imageIndex++;
             }
         });
+        // ENHANCED: Increased the delay for a more dramatic effect
         heroTitle.querySelectorAll('.char, .inline-img').forEach((el, index) => {
-            el.style.transitionDelay = `${index * 0.04 + 0.5}s`;
+            el.style.transitionDelay = `${index * 0.05 + 0.6}s`;
         });
       }
 
@@ -802,8 +817,7 @@
         });
       }, { threshold: 0.1 });
       sections.forEach(section => { if (section) observer.observe(section); });
-
-      // --- Fixed Header on Scroll ---
+            // --- Fixed Header on Scroll ---
       if (header) {
         window.addEventListener('scroll', () => {
           header.classList.toggle('scrolled', window.scrollY > 50);
@@ -842,7 +856,6 @@
       ];
       let currentClientIndex = 0;
       const cardVideo = document.querySelector(".client-card video");
-      const cardName = document.querySelector(".client-name");
       const [prevBtn, nextBtn] = document.querySelectorAll(".clients .arrow-btn");
 
       function updateClientCard() {
@@ -930,7 +943,7 @@
         });
       });
 
-      // --- Footer GSAP Animations ---
+
       if (window.gsap && window.ScrollTrigger) {
           gsap.registerPlugin(ScrollTrigger);
           gsap.from("#footer-logo span", { scrollTrigger: { trigger: "#footer-logo", start: "top 90%" }, y: -100, opacity: 0, duration: 1, ease: "power4.out" });
@@ -942,4 +955,3 @@
   </script>
 </body>
 </html>
-  
