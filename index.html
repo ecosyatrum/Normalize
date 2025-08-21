@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Normalize</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css');
+
+    :root {
+      --header-height: 80px;
+    }
+
+    /* --- Global Resets & Setup --- */
+    *{
+        box-sizing:border-box; 
+        margin:0; 
+        padding:0; 
+        cursor: none; /* Custom cursor is enabled by default */
+    }
+    html,body{
+      height:100%;
+      font-family:"Inter", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      color: #fff;
+      background: #000;
+      overflow-x: hidden; /* Prevents horizontal scroll from marquee */
+    }
+    html {
+      scroll-behavior: smooth; /* Enables smooth scrolling for anchor links */
+    }
+
+    /* --- Custom Cursor --- */
+    .cursor-follower {
+      position: fixed;
+      top: 0; left: 0;
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 3000;
+      pointer-events: none;
+      transition: transform 0.2s cubic-bezier(0.19, 1, 0.22, 1), background 0.2s, border 0.2s, width 0.3s ease, height 0.3s ease;
+      transform: translate(-50%, -50%);
+    }
+    .cursor-follower.active {
+      width: 50px;
+      height: 50px;
+      background: rgba(255, 255, 255, 0.25);
+      transform: translate(-50%, -50%) scale(1.2);
+    }
+    
+    /* --- Preloader --- */
+    .preloader {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000;
+      display: flex; justify-content: center; align-items: center;
+      z-index: 1000; transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+    .loader {
+      border: 8px solid #333; border-top: 8px solid #fff; border-radius: 50%;
+      width: 60px; height: 60px; animation: spin 1.5s linear infinite;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    
+    .main-content {
+      visibility: hidden; opacity: 0;
+      transition: visibility 0s 0.5s, opacity 0.5s ease;
+      padding-top: var(--header-height);
+    }
+    .main-content.loaded { visibility: visible; opacity: 1; }
+
+    /* --- Background Overlays & Videos --- */
+    .grain-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        z-index: -2; pointer-events: none; opacity: 0.05;
+        animation: grain 8s steps(10) infinite;
+        background-image: url("https://uploads-ssl.webflow.com/62e3ee10882f2876cd3e879c/62e3ee10882f28359c3e8812_noise-50.gif");
+    }
+    @keyframes grain {0%,100%{transform:translate(0,0)}10%{transform:translate(-5%,-10%)}20%{transform:translate(-15%,5%)}30%{transform:translate(7%,-25%)}40%{transform:translate(-5%,25%)}50%{transform:translate(-15%,10%)}60%{transform:translate(15%,0%)}70%{transform:translate(0%,15%)}80%{transform:translate(3%,35%)}90%{transform:translate(-10%,10%)}}
+    
+    .bg-video {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      object-fit: cover; z-index: -3; filter: brightness(0.4);
+    }
+
+    /* --- Header & Menu --- */
+    header {
+      position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 2rem; z-index: 800;
+      transition: background-color 0.4s ease, backdrop-filter 0.4s ease, border-bottom 0.4s ease;
+    }
+    header.scrolled {
+      background-color: rgba(10, 10, 10, 0.5); backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    header .logo { font-size: 1.2rem; font-weight: 700; color: #fff; text-decoration: none; }
+    
+    .menu-btn {
+      border: 1px solid #fff; padding: 8px 24px; border-radius: 30px; font-size: 1rem;
+      transition: 0.3s; background: transparent; color: #fff; font-weight: 500;
+    }
+    .menu-btn:hover { background: #fff; color: #000; }
+
+    .menu-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      gap: 2rem; font-size: clamp(2rem, 8vw, 4rem); font-weight: 900; text-transform: uppercase;
+      transition: opacity 0.4s ease, visibility 0.4s ease; opacity: 0; visibility: hidden; z-index: 900;
+    }
+    .menu-overlay.active { opacity: 1; visibility: visible; }
+    .menu-overlay a {
+      color: #fff; text-decoration: none; transition: color 0.3s, transform 0.3s;
+      transform: translateY(20px); opacity: 0; animation: menu-item-fade-in 0.5s ease forwards;
+    }
+    .menu-overlay.active a:nth-child(2) { animation-delay: 0.1s; }
+    .menu-overlay.active a:nth-child(3) { animation-delay: 0.2s; }
+    .menu-overlay.active a:nth-child(4) { animation-delay: 0.3s; }
+    .menu-overlay.active a:nth-child(5) { animation-delay: 0.4s; }
+    @keyframes menu-item-fade-in { to { opacity: 1; transform: translateY(0); } }
+    .menu-overlay a:hover { color: #aaa; }
+    
+    .close-btn {
+      position: absolute; top: 25px; right: 30px; font-size: 2.5rem; color: #fff; transition: transform 0.3s;
+    }
+    .close-btn:hover { transform: rotate(90deg); }
+
+    .social-icons {
+      position: absolute; bottom: 40px; display: flex;
+      gap: 2.5rem; font-size: 1.5rem;
+    }
+    .social-icons a { color: #fff; transition: color 0.3s, transform 0.3s; }
+    .social-icons a:hover { color: #999; transform: translateY(-5px); }
+    
+    /* --- General Section Styling & Animation --- */
+    .animated-section {
+      padding: 5rem 2rem;
+      position: relative;
+      z-index: 5;
+      opacity: 0;
+      transform: translateY(80px) scale(0.95);
+      filter: blur(10px);
+      transition: all 1s cubic-bezier(0.25, 1, 0.3, 1);
+    }
+    .animated-section.is-visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+
+    /* --- New: Motion Effect Class --- */
+    .motion-effect {
+        will-change: transform; /* Performance optimization for mobile */
+        transition: transform 0.1s linear;
+    }
+
+    /* --- Hero Section --- */
+    .hero {
+      min-height: calc(100vh - var(--header-height)); display: flex; flex-direction: column;
+      justify-content: center; align-items: flex-start;
+      text-align: left; padding: 2rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 8vw, 6rem); line-height: 1.1; font-weight: 900;
+      display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    }
+    .hero h1 .char, .hero h1 .inline-img {
+      display: inline-block; opacity: 0; transform: translateY(100%);
+      transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1), opacity 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+    }
+    .hero.is-visible .char, .hero.is-visible .inline-img {
+        opacity: 1; transform: translateY(0);
+    }
+    .hero p.subtitle {
+      font-size: clamp(1rem, 2vw, 1.2rem); margin-top: 1.5rem; max-width: 600px;
+      color: rgba(255, 255, 255, 0.85); font-weight: 400; opacity: 0;
+      animation: heroFadeUp 1s ease 1.8s forwards;
+    }
+    .hero .cta-button {
+      margin-top: 2rem; padding: 12px 30px; background: rgba(255, 255, 255, 0.9);
+      color: #000; text-decoration: none; font-weight: 700; border-radius: 30px;
+      transition: transform 0.3s ease, background 0.3s ease; opacity: 0;
+      animation: heroFadeUp 1s ease 2s forwards;
+    }
+    .hero .cta-button:hover { background: #fff; transform: translateY(-3px); }
+    @keyframes heroFadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .inline-img {
+      width: clamp(40px, 6vw, 60px); height: clamp(40px, 6vw, 60px);
+      border-radius: 12px; object-fit: cover; vertical-align: middle;
+      transition-delay: inherit !important;
+    }
+    
+    /* --- Clients Section --- */
+    .clients h2 { font-size: clamp(2rem, 6vw, 4rem); font-weight: 800; margin-bottom: 2rem; text-align: center; }
+    .client-card { position: relative; overflow: hidden; border-radius: 20px; margin-bottom: 2rem; will-change: transform; }
+    .client-card video { width: 100%; border-radius: 20px; transition: transform 0.6s ease; }
+    .client-card:hover video { transform: scale(1.05); }
+    .client-name {
+      position: absolute; bottom: 20px; left: 20px; font-size: 1.2rem; font-weight: 600;
+      background: rgba(0,0,0,0.5); padding: 8px 15px; border-radius: 10px;
+    }
+    .arrows { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem; }
+    .arrow-btn {
+      width: 50px; height: 50px; border-radius: 50%; background: #fff; color: #000;
+      border: none; font-size: 1.5rem; transition: 0.3s;
+    }
+    .arrow-btn:hover { background: #ccc; }
+    
+    /* --- Themed Content Sections (Formerly French Text) --- */
+    .tagline-section { text-align: center; padding: 6rem 2rem 3rem; }
+    .tagline-section .tagline-logo { font-size: 4rem; margin-bottom: 1rem; }
+    .tagline-section h1 { font-size: clamp(2rem, 6vw, 3rem); font-weight: 400; }
+    .tagline-section span { font-weight: 700; color: #fff; }
+
+    .quote-section {
+      display: flex; justify-content: center; align-items: flex-start;
+      gap: 2rem; flex-wrap: wrap; text-align: left;
+    }
+    .quote-section img { width: 320px; border-radius: 10px; }
+    .quote-section .quote { max-width: 600px; font-size: 1rem; }
+    .quote-section .quote p { font-style: italic; margin-bottom: 1rem; }
+    .quote-section .quote span { display: block; font-weight: 700; margin-top: 0.5rem; }
+    
+    .about-section {
+      padding: 3rem 2rem; max-width: 900px;
+      margin: auto; font-size: 1rem; text-align: left;
+    }
+    .about-section strong { font-weight: 700; color: #fff; }
+
+    /* --- Categories Section --- */
+    #categories {
+        background: linear-gradient(135deg, rgba(10, 10, 10, 0.85), rgba(25, 25, 25, 0.65));
+        backdrop-filter: blur(8px); padding: 3rem 0;
+        display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    #categories .category-item { display: block; }
+    #categories .category-card {
+        position: relative; overflow: hidden;
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    #categories .category-card video { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    #categories .category-card:hover video { transform: scale(1.05); }
+    #categories .category-card:hover { transform: translateY(-8px); box-shadow: 0 12px 30px rgba(0,0,0,0.5); }
+    .video-overlay-btn {
+        position: absolute; color: #fff; text-decoration: none;
+        background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        transition: all 0.3s ease; opacity: 0; transform: scale(0.9);
+    }
+    #categories .category-card:hover .video-overlay-btn { opacity: 1; transform: scale(1); }
+    .explore-link {
+        top: 50%; right: 25px; transform: translateY(-50%);
+        width: 50px; height: 50px; border-radius: 50%; font-size: 1.2rem;
+        display: flex; align-items: center; justify-content: center;
+    }
+    .view-video-btn {
+        bottom: 25px; left: 25px; padding: 8px 15px; border-radius: 30px;
+        font-size: 0.9rem; display: flex; align-items: center; gap: 8px; font-weight: 500;
+    }
+    .video-overlay-btn:hover { background: rgba(255, 255, 255, 0.2); }
+    .explore-link:hover { transform: scale(1.1) translateY(-50%); }
+    .view-video-btn:hover { transform: scale(1.1); }
+
+    /* --- Partners Marquee Section --- */
+    .partners-container {
+      position: relative; text-align: center; padding: 4rem 0; overflow: hidden;
+    }
+    .partners-bg-video {
+      position: absolute; top: 50%; left: 50%; width: auto; height: 100%;
+      min-width: 100%; min-height: 100%; transform: translate(-50%, -50%);
+      z-index: -1; object-fit: cover; filter: brightness(0.3);
+    }
+    .partners-container h2 {
+      font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 600; margin-bottom: 3rem;
+      position: relative; z-index: 1; text-shadow: 0 0 15px rgba(0,0,0,0.6);
+    }
+    .marquee { display: flex; width: max-content; animation: scroll 40s linear infinite; }
+    .partners-logos { display: flex; gap: 4rem; align-items: center; padding: 0 2rem; }
+    .partner-logo img {
+      height: 50px; opacity: 0.6; transition: all 0.3s ease; filter: grayscale(80%);
+    }
+    .partner-logo img:hover { opacity: 1; transform: scale(1.1); filter: grayscale(0%); }
+    @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* --- Showcase Intro Section --- */
+    #showcase-intro { 
+        padding: 0; height: 100vh; position: relative; z-index: 5;
+    }
+    .product-showcase-container {
+      position: relative; width: 100%; height: 100%; overflow: hidden;
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: 30px; color: #fff; animation: showcaseFadeIn 1.2s ease-in-out;
+    }
+    .product-showcase-container #bg-video {
+      position: absolute; top: 50%; left: 50%; width: 100%; height: 100%;
+      object-fit: cover; transform: translate(-50%, -50%); z-index: -1; filter: brightness(0.4);
+    }
+    #particles {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+    }
+    .product-showcase-container .showcase-header,
+    .product-showcase-container .showcase-main,
+    .product-showcase-container .showcase-footer {
+      position: relative; z-index: 2; width: 100%;
+    }
+    .product-showcase-container .showcase-header {
+      display: flex; justify-content: center; gap: 20px;
+      animation: showcaseSlideDown 1.2s ease forwards;
+    }
+    .showcase-header .category-card {
+      width: 110px; height: 130px; background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 16px;
+      display: flex; justify-content: center; align-items: center;
+      font-size: 2rem; backdrop-filter: blur(10px);
+      transition: all 0.4s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      position: relative; will-change: transform;
+    }
+    .showcase-header .category-card:hover {
+      background: rgba(255, 255, 255, 0.15); transform: translateY(-8px) scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6), 0 0 10px rgba(255,255,255,0.4);
+    }
+    .category-card[title]:hover::after {
+      content: attr(title); position: absolute; bottom: -30px;
+      background: rgba(0,0,0,0.6); color: #fff; padding: 4px 10px;
+      font-size: 0.85rem; border-radius: 6px; white-space: nowrap;
+      z-index: 3; opacity: 1; transition: opacity 0.3s ease;
+    }
+    .product-showcase-container .showcase-main {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 90%; display: flex; justify-content: space-between; align-items: center;
+      animation: showcaseMainFadeUp 1.5s ease;
+    }
+    .showcase-main .product-tag {
+      background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px);
+      padding: 12px 24px; border-radius: 10px;
+      font-size: 1rem; border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      animation: showcaseGlowPulse 3s infinite, showcaseFloatUp 4s ease-in-out infinite;
+    }
+    .showcase-main .action-button {
+      width: 65px; height: 65px; background: rgba(255, 255, 255, 0.85);
+      border: none; border-radius: 12px; display: flex;
+      justify-content: center; align-items: center; transition: all 0.35s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .showcase-main .action-button:hover {
+      background: #fff; transform: scale(1.15) rotate(5deg);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5), 0 0 12px rgba(255,255,255,0.6);
+    }
+    .showcase-main .action-button svg { width: 30px; height: 30px; stroke: #000; transition: all 0.35s ease; }
+    .showcase-main .action-button:hover svg { stroke: #ff0055; transform: rotate(15deg) scale(1.2); }
+    .product-showcase-container .showcase-footer {
+      display: flex; justify-content: space-between; font-size: 1rem; font-weight: 500;
+      letter-spacing: 1px; text-transform: uppercase; animation: showcaseSlideUp 1.3s ease forwards;
+    }
+    .showcase-footer a { color: #ffffff; text-decoration: none; transition: opacity 0.3s ease, text-shadow 0.3s ease; }
+    .showcase-footer a:hover { opacity: 0.8; text-shadow: 0 0 8px rgba(255,255,255,0.6); }
+    
+    @keyframes showcaseFadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes showcaseSlideDown { from { opacity: 0; transform: translateY(-50px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes showcaseSlideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes showcaseMainFadeUp { from { opacity: 0; transform: translate(-50%, -40%); } to { opacity: 1; transform: translate(-50%, -50%); } }
+    @keyframes showcaseGlowPulse { 0%, 100% { box-shadow: 0 0 10px rgba(255,255,255,0.2); } 50% { box-shadow: 0 0 20px rgba(255,255,255,0.5); } }
+    @keyframes showcaseFloatUp { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+    /* --- Footer --- */
+    .transparent-footer {
+      position: relative; background: transparent; color: #fff; padding: 80px 40px; overflow: hidden;
+    }
+    .footer-container {
+      max-width: 1300px; margin: 0 auto; display: grid;
+      grid-template-columns: 100px 1fr; grid-gap: 50px; align-items: start;
+    }
+    .footer-logo span {
+      writing-mode: vertical-rl; transform: rotate(180deg); font-size: 4.5rem;
+      font-weight: 800; line-height: 1; letter-spacing: -3px;
+      background: linear-gradient(180deg, #fff, #666);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .footer-tagline h4 {
+      font-size: 1.2rem; font-weight: 400; color: #aaa; margin-bottom: 8px;
+    }
+    .footer-tagline p {
+      font-size: 1.7rem; font-weight: 600; line-height: 1.4;
+      max-width: 580px; margin-bottom: 50px;
+    }
+    .footer-info {
+      display: flex; justify-content: space-between;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      padding-top: 25px; margin-bottom: 50px; flex-wrap: wrap; gap: 20px;
+    }
+    .footer-column h5 {
+      font-size: 0.9rem; font-weight: 600; letter-spacing: 1px;
+      color: #999; margin-bottom: 10px;
+    }
+    .footer-column p, .footer-column ul {
+      font-size: 1rem; margin: 0; padding: 0; list-style: none; color: #fff;
+    }
+    .footer-column ul li { margin-bottom: 6px; font-family: monospace; font-size: 1rem; letter-spacing: 0.5px; transition: color 0.3s; }
+    .footer-column ul li:hover { color: #ffc400; }
+    .footer-email { text-align: right; }
+    .footer-email a {
+      display: inline-block; padding: 12px 28px; border-radius: 50px; background: #ffc400;
+      font-weight: 600; font-size: 1rem; text-decoration: none; color: #000; transition: 0.3s ease;
+    }
+    .footer-email a:hover {
+      background: #ffd633; transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 6px 20px rgba(255, 196, 0, 0.4);
+    }
+    .footer-lines { position: absolute; bottom: 60px; left: 50%; width: 400px; height: 200px; pointer-events: none; }
+    .footer-lines::before, .footer-lines::after {
+      content: ""; position: absolute; width: 1px; height: 180px;
+      background: rgba(255,255,255,0.7); transform: rotate(35deg);
+    }
+    .footer-lines::after { left: 100px; transform: rotate(65deg); }
+
+    /* --- Responsive Adjustments --- */
+    @media (max-width: 768px) {
+      .cursor-follower { display: none; } 
+      *{ cursor: auto; }
+      header { padding: 0 1.5rem; }
+      .hero { padding: 1rem; min-height: 70vh; align-items: center; text-align: center; }
+      .clients, .partners-container { padding-left: 1rem; padding-right: 1rem; }
+      .arrows { justify-content: center; }
+      .partner-logo img { height: 40px; }
+      .partners-logos { gap: 2.5rem; }
+      .showcase-main .product-tag { font-size: 0.9rem; }
+      .showcase-main .action-button { width: 55px; height: 55px; }
+      .showcase-header .category-card { width: 90px; height: 110px; font-size: 1.7rem; }
+      .product-showcase-container .showcase-footer { flex-direction: column; align-items: center; gap: 1rem; }
+
+      .footer-container { grid-template-columns: 1fr; text-align: center; }
+      .footer-info { flex-direction: column; gap: 25px; align-items: center; }
+      .footer-email { text-align: center; margin-top: 20px; }
+      .footer-logo span { writing-mode: horizontal-tb; transform: none; font-size: 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor-follower"></div>
+  <div class="grain-overlay"></div>
+
+  <div class="preloader" id="preloader"><div class="loader"></div></div>
+  <video class="bg-video" autoplay muted loop playsinline><source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4"></video>
+  
+  <header id="header">
+    <a href="#" class="logo">M41T</a>
+    <button class="menu-btn" id="openMenu" data-magnetic>MENU</button>
+  </header>
+  
+  <div class="menu-overlay" id="menuOverlay">
+    <div class="close-btn" id="closeMenu">&times;</div>
+    <a href="#hero">Home</a>
+    <a href="#About">Work</a>
+    <a href="https://ecozymeet.netlify.app/">Services</a>
+    <a href="https://ecosyatrum.github.io/resumes/">About</a>
+    <div class="social-icons">
+      <a href="" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+      <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+      <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+    </div>
+  </div>
+
+  <div class="main-content" id="mainContent">
+<section class="hero animated-section" id="home">
+  <h1 class="hero-title">
+    SHAPING
+    <img src="https://ibb.co/xS8PYpjB" class="inline-img motion-effect" data-motion-intensity="15" alt="Creative Element 1">
+    THOUGHTS FRAME
+    <img src="https://ibb.co/QF459rsC" class="inline-img motion-effect" data-motion-intensity="25" alt="Creative Element 2">
+    BY FRAME
+  </h1>
+  <p class="subtitle">
+    Not just lessons from books—  
+    I build <strong>connections</strong> like equations:  
+    one glance becomes a theory,  
+    one silence turns into a formula of curiosity.  
+    Knowledge is power, but <em>presence</em> is its real chemistry.  
+  </p>
+  <a href="https://ecosyatrum.github.io/resumes/" class="cta-button">Experience the Flow</a>
+</section>
+
+    <section class="clients animated-section" id="work">
+      <h2>CLIENTS</h2>
+      <div class="client-card motion-effect" data-motion-intensity="10" data-tilt data-tilt-glare data-tilt-max-glare="0.2">
+        <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay muted loop playsinline></video>
+        <div class="client-name">Mizuno</div>
+      </div>
+      <div class="arrows">
+        <button class="arrow-btn" data-magnetic aria-label="Previous Client">&#8592;</button>
+        <button class="arrow-btn" data-magnetic aria-label="Next Client">&#8594;</button>
+      </div>
+    </section>
+        
+<section class="tagline-section animated-section">
+  <div class="tagline-logo">⌘</div>
+  <h1>
+    More than a <span>student</span> —  
+    a moving equation of <strong>energy</strong>, <strong>depth</strong> & that unseen vibe  
+    jo aankhon se feel hota hai, samajhne se pehle.  
+  </h1>
+</section>
+
+<section class="quote-section animated-section">
+  <img src="https://ibb.co/Ld23PQTx" alt="YOUR Device PROBLEM">
+  <div class="quote">
+    <p>
+      “Main sirf notes nahi likhta,  
+      main <strong>signals</strong> decode karta hoon.  
+      Kabhi dil ki dhadkan ek rhythm ban jaati hai,  
+      kabhi aankhon ka spark ek research topic.  
+      Knowledge bhi ek <strong>magnetism</strong> hai—  
+      jo samjhega, woh automatically attract hoga.”  
+    </p>
+    <span>— The Student</span>
+  </div>
+</section>
+<section class="about-section animated-section" id="about">
+  <p>
+    On paper I’m a student,  
+    but in reality—a <strong>concept in motion</strong>.  
+    Curiosity flows through me the way current runs through a circuit,  
+    aur har moment ek experiment lagta hai.  
+  </p>
+  <br>
+  <p>
+    Thoda sa <strong>mystery</strong>, thoda sa <strong>logic</strong>,  
+    aur thoda sa woh instinct jo samajh ke bhi explain nahi hota.  
+    Kabhi innocent curiosity, kabhi bold confidence—  
+    bas wahi mera real signature hai.  
+  </p>
+  <br>
+  <p>
+    For me, fashion is not fabric—  
+    it’s a <strong>second language</strong> of psychology & presence.  
+    It carries emotions, triggers senses,  
+    and leaves behind questions jo har kisi ke dimaag mein tik jaati hain.  
+  </p>
+</section>
+    <section id="categories" class="animated-section">
+        <div class="category-item">
+            <div class="category-card">
+                <video autoplay muted loop playsinline src="https://www.w3schools.com/html/mov_bbb.mp4"></video>
+                <a href="#" class="view-video-btn video-overlay-btn"><i class="fas fa-expand"></i> View Full Video</a>
+                <a href="#" class="explore-link video-overlay-btn"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="category-item">
+            <div class="category-card">
+                <video autoplay muted loop playsinline src="https://www.w3schools.com/howto/rain.mp4"></video>
+                <a href="#" class="view-video-btn video-overlay-btn"><i class="fas fa-expand"></i> View Full Video</a>
+                <a href="#" class="explore-link video-overlay-btn"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="category-item">
+            <div class="category-card">
+                <video autoplay muted loop playsinline src="https://www.w3schools.com/html/mov_bbb.mp4"></video>
+                <a href="#" class="view-video-btn video-overlay-btn"><i class="fas fa-expand"></i> View Full Video</a>
+                <a href="#" class="explore-link video-overlay-btn"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+                <div class="category-item">
+            <div class="category-card">
+                <video autoplay muted loop playsinline src="https://www.w3schools.com/howto/rain.mp4"></video>
+                <a href="#" class="view-video-btn video-overlay-btn"><i class="fas fa-expand"></i> View Full Video</a>
+                <a href="#" class="explore-link video-overlay-btn"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+                <div class="category-item">
+            <div class="category-card">
+                <video autoplay muted loop playsinline src="https://www.w3schools.com/html/mov_bbb.mp4"></video>
+                <a href="#" class="view-video-btn video-overlay-btn"><i class="fas fa-expand"></i> View Full Video</a>
+                <a href="#" class="explore-link video-overlay-btn"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+                <div class="category-item">
+            <div class="category-card">
+                <video autoplay muted loop playsinline src="https://www.w3schools.com/howto/rain.mp4"></video>
+                <a href="#" class="view-video-btn video-overlay-btn"><i class="fas fa-expand"></i> View Full Video</a>
+                <a href="#" class="explore-link video-overlay-btn"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+                <div class="category-item">
+            <div class="category-card">
+                <video autoplay muted loop playsinline src="https://www.w3schools.com/html/mov_bbb.mp4"></video>
+                <a href="#" class="view-video-btn video-overlay-btn"><i class="fas fa-expand"></i> View Full Video</a>
+                <a href="#" class="explore-link video-overlay-btn"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+                <div class="category-item">
+            <div class="category-card">
+                <video autoplay muted loop playsinline src="https://www.w3schools.com/howto/rain.mp4"></video>
+                <a href="#" class="view-video-btn video-overlay-btn"><i class="fas fa-expand"></i> View Full Video</a>
+                <a href="#" class="explore-link video-overlay-btn"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+    
+
+<footer class="transparent-footer">
+  <div class="footer-container">
+    <div class="footer-logo" id="footer-logo"><span>M41T</span></div>
+    <div class="footer-main">
+      
+      <div class="footer-tagline" id="footer-tagline">
+        <h4>A Mind in Motion</h4>
+        <p>
+          Not just learning—  
+          but shaping signals, moments, and connections  
+          that leave a pulse even after time moves on.
+        </p>
+      </div>
+
+      <div class="footer-info">
+        <div class="footer-column" id="footer-locations">
+          <h5>LOCATIONS</h5>
+          <p>TO & CPH</p>
+        </div>
+        <div class="footer-column" id="footer-services">
+          <h5>FOCUS</h5>
+          <ul>
+            <li>Curiosity</li>
+            <li>Identity</li>
+            <li>Digital Flow</li>
+            <li>Human Chemistry</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-email" id="footer-email">
+        <a href="mailto:ecosynetwork@gmail.com">HI@M41T.STUDIO</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-lines"></div>
+</footer>
+  </div>
+      <section id="showcase-intro" class="animated-section">
+        <div class="product-showcase-container">
+            <video id="bg-video" autoplay muted loop playsinline><source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4"></video>
+            <canvas id="particles"></canvas>
+            <div class="showcase-header">
+                <div class="category-card video-btn motion-effect" data-motion-intensity="20" data-video="https://www.w3schools.com/html/mov_bbb.mp4" title="Global Trends" data-tilt>🌍</div>
+                <div class="category-card motion-effect" data-motion-intensity="15" title="Financial Insights" data-tilt><a href="https://www.imf.org" style="text-decoration:none; font-size: 2rem;" target="_blank" rel="noopener">🏦</a></div>
+                <div class="category-card video-btn motion-effect" data-motion-intensity="20" data-video="https://www.w3schools.com/html/movie.mp4" title="Market Growth" data-tilt>📈</div>
+            </div>
+            <div class="showcase-main">
+                <div class="product-tag">Next-Gen Policy Directives</div>
+                <button class="action-button" aria-label="Deploy Initiative"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 12H7"></path><path d="m12 17 5-5-5-5"></path></svg></button>
+            </div>
+            <div class="showcase-footer">
+                <a href="https://ecozymeet.netlify.app/">Ecommerce</a>
+                <a href="https://ecosyatrum.github.io/resumes/">Resumme</a>
+                <a href="https://www.imf.org">Normalize</a>
+            </div>
+        </div>
+    </section>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.7.2/dist/vanilla-tilt.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // --- Preloader and page load animation ---
+      const preloader = document.getElementById('preloader');
+      const mainContent = document.getElementById('mainContent');
+      
+      window.addEventListener('load', () => {
+        if (preloader) {
+          preloader.style.opacity = '0';
+          preloader.style.visibility = 'hidden';
+        }
+        if (mainContent) {
+          mainContent.classList.add('loaded');
+        }
+        setupHeroTextAnimation();
+        initDeviceMotion(); // Initialize motion effects after page loads
+      });
+
+      // --- New: Device Motion Functionality ---
+      function initDeviceMotion() {
+        const motionElements = document.querySelectorAll('.motion-effect');
+        if (motionElements.length === 0) return;
+
+        const handleOrientation = (event) => {
+          // beta: front-back tilt (-180 to 180)
+          // gamma: left-right tilt (-90 to 90)
+          const beta = event.beta; 
+          const gamma = event.gamma;
+
+          motionElements.forEach(el => {
+            const intensity = parseFloat(el.dataset.motionIntensity) || 10;
+            const x = (gamma / 90) * intensity; // Normalize gamma and apply intensity
+            const y = (beta / 180) * intensity; // Normalize beta and apply intensity
+            
+            gsap.to(el, {
+              x: x,
+              y: y,
+              duration: 0.5,
+              ease: 'power1.out'
+            });
+          });
+        };
+
+        // Standard event listener
+        if (window.DeviceOrientationEvent) {
+            // iOS 13+ requires user permission
+            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                const ctaButton = document.querySelector('.cta-button');
+                if (ctaButton) {
+                    ctaButton.addEventListener('click', () => {
+                        DeviceOrientationEvent.requestPermission()
+                            .then(permissionState => {
+                                if (permissionState === 'granted') {
+                                    window.addEventListener('deviceorientation', handleOrientation);
+                                }
+                            })
+                            .catch(console.error);
+                    });
+                }
+            } else {
+                // For other browsers that don't require permission
+                window.addEventListener('deviceorientation', handleOrientation);
+            }
+        }
+      }
+
+
+      // --- Hero Text Animation ---
+      function setupHeroTextAnimation() {
+        const heroTitle = document.querySelector('.hero-title');
+        if (!heroTitle) return;
+
+        const content = heroTitle.innerHTML;
+        const textParts = content.split(/<img.*?>/g);
+        const images = [...heroTitle.querySelectorAll('.inline-img')];
+        
+        heroTitle.innerHTML = '';
+        let imageIndex = 0;
+
+        textParts.forEach((text, index) => {
+            const words = text.trim().split(/\s+/);
+            words.forEach(word => {
+                if(word) {
+                    const wordSpan = document.createElement('span');
+                    wordSpan.className = 'word';
+                    word.split('').forEach(char => {
+                        const charSpan = document.createElement('span');
+                        charSpan.className = 'char';
+                        charSpan.textContent = char;
+                        wordSpan.appendChild(charSpan);
+                    });
+                    heroTitle.appendChild(wordSpan);
+                }
+            });
+            if (images[imageIndex]) {
+                heroTitle.appendChild(images[imageIndex]);
+                imageIndex++;
+            }
+        });
+
+        heroTitle.querySelectorAll('.char, .inline-img').forEach((el, index) => {
+            el.style.transitionDelay = `${index * 0.04 + 0.5}s`;
+        });
+      }
+
+      // --- Custom Cursor Follower ---
+      const cursorFollower = document.querySelector('.cursor-follower');
+      if (cursorFollower) {
+        window.addEventListener('mousemove', e => {
+          gsap.to(cursorFollower, { duration: 0.3, x: e.clientX, y: e.clientY, ease: 'power2.out' });
+        });
+        document.querySelectorAll('a, button, [data-magnetic], .category-card, .video-overlay-btn').forEach(el => {
+            el.addEventListener('mouseenter', () => cursorFollower.classList.add('active'));
+            el.addEventListener('mouseleave', () => cursorFollower.classList.remove('active'));
+        });
+        document.addEventListener('mouseleave', () => gsap.to(cursorFollower, { duration: 0.2, opacity: 0 }));
+        document.addEventListener('mouseenter', () => gsap.to(cursorFollower, { duration: 0.2, opacity: 1 }));
+      }
+
+      // --- Animate sections on scroll ---
+      const sections = document.querySelectorAll('.animated-section');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      sections.forEach(section => { if (section) observer.observe(section); });
+
+      // --- Fixed Header on Scroll ---
+      const header = document.getElementById('header');
+      if (header) {
+        window.addEventListener('scroll', () => {
+          header.classList.toggle('scrolled', window.scrollY > 50);
+        });
+      }
+
+      // --- Menu Overlay Functionality ---
+      const openMenu = document.getElementById("openMenu");
+      const closeMenu = document.getElementById("closeMenu");
+      const menuOverlay = document.getElementById("menuOverlay");
+      const menuLinks = menuOverlay.querySelectorAll('a');
+
+      function toggleMenu(show) {
+        if (show) {
+            menuOverlay.classList.add("active");
+            document.body.style.overflow = 'hidden';
+        } else {
+            menuOverlay.classList.remove("active");
+            document.body.style.overflow = '';
+        }
+      }
+      openMenu.addEventListener("click", () => toggleMenu(true));
+      closeMenu.addEventListener("click", () => toggleMenu(false));
+      menuLinks.forEach(link => link.addEventListener('click', () => toggleMenu(false)));
+
+
+      // --- Client Video Slider ---
+      const clientCards = [
+        {video: "https://www.w3schools.com/html/mov_bbb.mp4", name: "Mizuno"},
+        {video: "https://www.w3schools.com/html/movie.mp4", name: "Nike"},
+        {video: "https://www.w3schools.com/html/mov_bbb.mp4#t=5", name: "Adidas"}
+      ];
+      let currentClientIndex = 0;
+      const cardVideo = document.querySelector(".client-card video");
+      const cardName = document.querySelector(".client-name");
+      const [prevBtn, nextBtn] = document.querySelectorAll(".clients .arrow-btn");
+
+      function updateClientCard() {
+        if (cardVideo && cardName) {
+          gsap.to([cardVideo, cardName], { opacity: 0, duration: 0.3, onComplete: () => {
+            cardVideo.src = clientCards[currentClientIndex].video;
+            cardVideo.play();
+            cardName.textContent = clientCards[currentClientIndex].name;
+            gsap.to([cardVideo, cardName], { opacity: 1, duration: 0.3 });
+          }});
+        }
+      }
+      if(prevBtn) prevBtn.addEventListener("click", () => {
+        currentClientIndex = (currentClientIndex - 1 + clientCards.length) % clientCards.length;
+        updateClientCard();
+      });
+      if(nextBtn) nextBtn.addEventListener("click", () => {
+        currentClientIndex = (currentClientIndex + 1) % clientCards.length;
+        updateClientCard();
+      });
+      
+      // --- Showcase Video Switching ---
+      const videoCards = document.querySelectorAll('#showcase-intro .video-btn');
+      const bgVideo = document.querySelector('#showcase-intro #bg-video');
+      if (bgVideo) {
+        videoCards.forEach(card => {
+          card.addEventListener('click', () => {
+            const newVideoSrc = card.dataset.video;
+            if (newVideoSrc && bgVideo.src !== newVideoSrc) {
+              gsap.to(bgVideo, {opacity: 0, duration: 0.4, onComplete: () => {
+                bgVideo.src = newVideoSrc; 
+                bgVideo.play();
+                gsap.to(bgVideo, {opacity: 1, duration: 0.4});
+              }});
+            }
+          });
+        });
+      }
+
+      // --- Showcase Particle Animation ---
+      const canvas = document.getElementById('particles');
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+
+        for(let i=0; i<80; i++){
+          particles.push({
+            x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+            r: Math.random() * 2 + 1,
+            dx: Math.random() * 0.5 - 0.25, dy: Math.random() * 0.5 - 0.25
+          });
+        }
+        function animateParticles(){
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          particles.forEach(p => {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx.fill();
+            p.x += p.dx; p.y += p.dy;
+            if(p.x < 0 || p.x > canvas.width) p.dx *= -1;
+            if(p.y < 0 || p.y > canvas.height) p.dy *= -1;
+          });
+          requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+        window.addEventListener('resize', resizeCanvas);
+      }
+
+      // --- 3D Tilt Effect ---
+      VanillaTilt.init(document.querySelectorAll("[data-tilt]"), { max: 10, speed: 400, glare: true, "max-glare": 0.2 });
+      
+      // --- Magnetic Buttons ---
+      document.querySelectorAll('[data-magnetic]').forEach(el => {
+        el.addEventListener('mousemove', function(e) {
+          const { left, top, width, height } = this.getBoundingClientRect();
+          const x = e.clientX - (left + width / 2);
+          const y = e.clientY - (top + height / 2);
+          gsap.to(this, { x: x * 0.4, y: y * 0.4, duration: 0.7, ease: "elastic.out(1, 0.3)" });
+        });
+        el.addEventListener('mouseleave', function() {
+          gsap.to(this, { x: 0, y: 0, duration: 0.7, ease: "elastic.out(1, 0.3)" });
+        });
+      });
+
+      // --- Footer GSAP Animations ---
+      // Adding scroll triggers for better animation timing
+      if (window.gsap && window.ScrollTrigger) {
+          gsap.registerPlugin(ScrollTrigger);
+          gsap.from("#footer-logo span", { scrollTrigger: { trigger: "#footer-logo", start: "top 90%" }, y: -100, opacity: 0, duration: 1, ease: "power4.out" });
+          gsap.from("#footer-tagline h4, #footer-tagline p", { scrollTrigger: { trigger: "#footer-tagline", start: "top 90%" }, x: 100, opacity: 0, stagger: 0.3, duration: 1.2, ease: "power3.out" });
+          gsap.from("#footer-locations, #footer-services", { scrollTrigger: { trigger: "#footer-info", start: "top 90%" }, y: 80, opacity: 0, stagger: 0.3, duration: 1, ease: "back.out(1.5)" });
+          gsap.from("#footer-email", { scrollTrigger: { trigger: "#footer-email", start: "top 90%" }, scale: 0.5, opacity: 0, duration: 1, ease: "elastic.out(1, 0.5)" });
+      }
+
+    });
+  </script>
+</body>
+</html>
