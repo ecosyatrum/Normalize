@@ -3,8 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Normalize</title>
+  
+  <!-- SEO and Metadata -->
+  <title>M41T - A Creative Portfolio</title>
+  <meta name="description" content="A creative portfolio showcasing work for clients like Mizuno, focusing on shaping thoughts and connections through digital experiences.">
+  
+  <!-- Social Media Meta Tags (Open Graph & Twitter) -->
+  <meta property="og:title" content="M41T - A Creative Portfolio">
+  <meta property="og:description" content="Shaping thoughts frame by frame. Explore a fusion of creativity, logic, and digital flow.">
+  <meta property="og:image" content="2.jpg"> <!-- Replace with a link to a representative image -->
+  <meta property="og:url" content="#"> <!-- Replace with the actual URL of the page -->
+  <meta property="og:type" content="website">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="M41T - A Creative Portfolio">
+  <meta name="twitter:description" content="Shaping thoughts frame by frame. Explore a fusion of creativity, logic, and digital flow.">
+  <meta name="twitter:image" content="2.jpg"> <!-- Replace with a link to a representative image -->
+
   <style>
+    /* --- CSS Organization & Best Practices --- */
+    /* Google Fonts and Font Awesome Imports */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
     @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css');
 
@@ -17,38 +35,36 @@
         box-sizing:border-box; 
         margin:0; 
         padding:0; 
-        cursor: none; /* Custom cursor is enabled by default */
+        cursor: none;
     }
     html,body{
       height:100%;
       font-family:"Inter", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
       color: #fff;
-    background: transparent;
-      overflow-x: hidden; /* Prevents horizontal scroll from marquee */
+      background: transparent;
+      overflow-x: hidden;
     }
     html {
-      scroll-behavior: smooth; /* Enables smooth scrolling for anchor links */
+      scroll-behavior: smooth;
+    }
+
+    /* --- Accessibility: Focus Indicator --- */
+    :focus-visible {
+      outline: 3px solid #ffc400;
+      outline-offset: 3px;
     }
 
     /* --- Custom Cursor --- */
     .cursor-follower {
-      position: fixed;
-      top: 0; left: 0;
-      width: 30px; height: 30px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      z-index: 3000;
-      pointer-events: none;
+      position: fixed; top: 0; left: 0; width: 30px; height: 30px; border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+      z-index: 3000; pointer-events: none;
       transition: transform 0.2s cubic-bezier(0.19, 1, 0.22, 1), background 0.2s, border 0.2s, width 0.3s ease, height 0.3s ease;
       transform: translate(-50%, -50%);
     }
     .cursor-follower.active {
-      width: 50px;
-      height: 50px;
-      background: rgba(255, 255, 255, 0.25);
+      width: 50px; height: 50px; background: rgba(255, 255, 255, 0.25);
       transform: translate(-50%, -50%) scale(1.2);
     }
     
@@ -64,6 +80,7 @@
     }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     
+    /* --- Main Content --- */
     .main-content {
       visibility: hidden; opacity: 0;
       transition: visibility 0s 0.5s, opacity 0.5s ease;
@@ -71,7 +88,7 @@
     }
     .main-content.loaded { visibility: visible; opacity: 1; }
 
-    /* --- Background Overlays & Videos --- */
+    /* --- Backgrounds --- */
     .grain-overlay {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         z-index: -2; pointer-events: none; opacity: 0.05;
@@ -79,8 +96,7 @@
         background-image: url("bg.jpg");
     }
     @keyframes grain {0%,100%{transform:translate(0,0)}10%{transform:translate(-5%,-10%)}20%{transform:translate(-15%,5%)}30%{transform:translate(7%,-25%)}40%{transform:translate(-5%,25%)}50%{transform:translate(-15%,10%)}60%{transform:translate(15%,0%)}70%{transform:translate(0%,15%)}80%{transform:translate(3%,35%)}90%{transform:translate(-10%,10%)}}
-    
-    .bg-video {
+        .bg-video {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       object-fit: cover; z-index: -3; filter: brightness(0.4);
     }
@@ -124,6 +140,7 @@
     
     .close-btn {
       position: absolute; top: 25px; right: 30px; font-size: 2.5rem; color: #fff; transition: transform 0.3s;
+      background: none; border: none;
     }
     .close-btn:hover { transform: rotate(90deg); }
 
@@ -136,24 +153,16 @@
     
     /* --- General Section Styling & Animation --- */
     .animated-section {
-      padding: 5rem 2rem;
-      position: relative;
-      z-index: 5;
-      opacity: 0;
-      transform: translateY(80px) scale(0.95);
+      padding: 5rem 2rem; position: relative; z-index: 5;
+      opacity: 0; transform: translateY(80px) scale(0.95);
       filter: blur(10px);
-      transition: all 1s cubic-bezier(0.25, 1, 0.3, 1);
+      transition: opacity 1s cubic-bezier(0.25, 1, 0.3, 1), transform 1s cubic-bezier(0.25, 1, 0.3, 1), filter 1s cubic-bezier(0.25, 1, 0.3, 1);
     }
     .animated-section.is-visible {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      filter: blur(0);
+      opacity: 1; transform: translateY(0) scale(1); filter: blur(0);
     }
-
-    /* --- New: Motion Effect Class --- */
     .motion-effect {
-        will-change: transform; /* Performance optimization for mobile */
-        transition: transform 0.1s linear;
+        will-change: transform; transition: transform 0.1s linear;
     }
 
     /* --- Hero Section --- */
@@ -209,7 +218,7 @@
     }
     .arrow-btn:hover { background: #ccc; }
     
-    /* --- Themed Content Sections (Formerly French Text) --- */
+    /* --- Themed Content Sections --- */
     .tagline-section { text-align: center; padding: 6rem 2rem 3rem; }
     .tagline-section .tagline-logo { font-size: 4rem; margin-bottom: 1rem; }
     .tagline-section h1 { font-size: clamp(2rem, 6vw, 3rem); font-weight: 400; }
@@ -229,8 +238,7 @@
       margin: auto; font-size: 1rem; text-align: left;
     }
     .about-section strong { font-weight: 700; color: #fff; }
-
-    /* --- Categories Section --- */
+        /* --- Categories Section --- */
     #categories {
         background: linear-gradient(135deg, rgba(10, 10, 10, 0.85), rgba(25, 25, 25, 0.65));
         backdrop-filter: blur(8px); padding: 3rem 0;
@@ -284,8 +292,7 @@
     }
     .partner-logo img:hover { opacity: 1; transform: scale(1.1); filter: grayscale(0%); }
     @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-    /* --- Showcase Intro Section --- */
+        /* --- Showcase Intro Section --- */
     #showcase-intro { 
         padding: 0; height: 100vh; position: relative; z-index: 5;
     }
@@ -366,8 +373,7 @@
     @keyframes showcaseMainFadeUp { from { opacity: 0; transform: translate(-50%, -40%); } to { opacity: 1; transform: translate(-50%, -50%); } }
     @keyframes showcaseGlowPulse { 0%, 100% { box-shadow: 0 0 10px rgba(255,255,255,0.2); } 50% { box-shadow: 0 0 20px rgba(255,255,255,0.5); } }
     @keyframes showcaseFloatUp { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-
-    /* --- Footer --- */
+        /* --- Footer --- */
     .transparent-footer {
       position: relative; background: transparent; color: #fff; padding: 80px 40px; overflow: hidden;
     }
@@ -432,11 +438,23 @@
       .showcase-main .action-button { width: 55px; height: 55px; }
       .showcase-header .category-card { width: 90px; height: 110px; font-size: 1.7rem; }
       .product-showcase-container .showcase-footer { flex-direction: column; align-items: center; gap: 1rem; }
-
       .footer-container { grid-template-columns: 1fr; text-align: center; }
       .footer-info { flex-direction: column; gap: 25px; align-items: center; }
       .footer-email { text-align: center; margin-top: 20px; }
       .footer-logo span { writing-mode: horizontal-tb; transform: none; font-size: 3rem; }
+    }
+    
+    /* --- Accessibility: Reduced Motion --- */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .motion-effect {
+        transition: none;
+      }
     }
   </style>
 </head>
@@ -446,51 +464,50 @@
   <div class="grain-overlay"></div>
 
   <div class="preloader" id="preloader"><div class="loader"></div></div>
-  <video class="bg-video" autoplay muted loop playsinline><source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4"></video>
+  <video class="bg-video" autoplay muted loop playsinline preload="auto"><source src="1.mp4" type="video/mp4"></video>
   
   <header id="header">
     <a href="#" class="logo">M41T</a>
-    <button class="menu-btn" id="openMenu" data-magnetic>MENU</button>
+    <button class="menu-btn" id="openMenu" data-magnetic aria-haspopup="true" aria-controls="menuOverlay" aria-label="Open navigation menu">MENU</button>
   </header>
-  
-  <div class="menu-overlay" id="menuOverlay">
-    <div class="close-btn" id="closeMenu">&times;</div>
+    <nav class="menu-overlay" id="menuOverlay" aria-hidden="true">
+    <button class="close-btn" id="closeMenu" aria-label="Close navigation menu">&times;</button>
     <a href="#hero">Home</a>
     <a href="#About">Work</a>
-    <a href="https://ecozymeet.netlify.app/">Services</a>
-    <a href="https://ecosyatrum.github.io/resumes/">About</a>
+    <a href="https://ecozymeet.netlify.app/" target="_blank" rel="noopener noreferrer">Services</a>
+    <a href="https://ecosyatrum.github.io/resumes/" target="_blank" rel="noopener noreferrer">About</a>
     <div class="social-icons">
-      <a href="" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
       <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
       <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
       <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
     </div>
-  </div>
+  </nav>
 
-  <div class="main-content" id="mainContent">
-<section class="hero animated-section" id="home">
-  <h1 class="hero-title">
-    SHAPING
-    <img src="1.jpg" class="inline-img motion-effect" data-motion-intensity="15" alt="Creative Element 1">
-    THOUGHTS FRAME
-    <img src="2.jpg" class="inline-img motion-effect" data-motion-intensity="25" alt="Creative Element 2">
-    BY FRAME
-  </h1>
-  <p class="subtitle">
-    Not just lessons from books—  
-    I build <strong>connections</strong> like equations:  
-    one glance becomes a theory,  
-    one silence turns into a formula of curiosity.  
-    Knowledge is power, but <em>presence</em> is its real chemistry.  
-  </p>
-  <a href="https://ecosyatrum.github.io/resumes/" class="cta-button">Experience the Flow</a>
-</section>
+  <main class="main-content" id="mainContent">
+    <section class="hero animated-section" id="home">
+      <h1 class="hero-title">
+        SHAPING
+        <img src="1.jpg" class="inline-img motion-effect" data-motion-intensity="15" alt="Creative Element 1" decoding="async">
+        THOUGHTS FRAME
+        <img src="2.jpg" class="inline-img motion-effect" data-motion-intensity="25" alt="Creative Element 2" decoding="async">
+        BY FRAME
+      </h1>
+      <p class="subtitle">
+        Not just lessons from books—  
+        I build <strong>connections</strong> like equations:  
+        one glance becomes a theory,  
+        one silence turns into a formula of curiosity.  
+        Knowledge is power, but <em>presence</em> is its real chemistry.  
+      </p>
+      <a href="https://ecosyatrum.github.io/resumes/" class="cta-button" target="_blank" rel="noopener noreferrer">Experience the Flow</a>
+    </section>
 
     <section class="clients animated-section" id="work">
       <h2>CLIENTS</h2>
       <div class="client-card motion-effect" data-motion-intensity="10" data-tilt data-tilt-glare data-tilt-max-glare="0.2">
-        <video src="Video-40.mp4" autoplay muted loop playsinline></video>
-        <div class="client-name">Mizuno</div>
+        <video src="2.mp4" autoplay muted loop playsinline loading="lazy" preload="metadata"></video>
+        <div class="client-name">HELLO</div>
       </div>
       <div class="arrows">
         <button class="arrow-btn" data-magnetic aria-label="Previous Client">&#8592;</button>
@@ -498,181 +515,188 @@
       </div>
     </section>
         
-<section class="tagline-section animated-section">
-  <div class="tagline-logo">⌘</div>
-  <h1>
-    More than a <span>student</span> —  
-    a moving equation of <strong>energy</strong>, <strong>depth</strong> & that unseen vibe  
-    jo aankhon se feel hota hai, samajhne se pehle.  
-  </h1>
-</section>
+    <section class="tagline-section animated-section">
+      <div class="tagline-logo">⌘</div>
+      <h1>
+        More than a <span>student</span> —  
+        a moving equation of <strong>energy</strong>, <strong>depth</strong> & that unseen vibe  
+        jo aankhon se feel hota hai, samajhne se pehle.  
+      </h1>
+    </section>
 
-<section class="quote-section animated-section">
-  <img src="3.jpg" alt="YOUR Device PROBLEM">
-  <div class="quote">
-    <p>
-      “Main sirf notes nahi likhta,  
-      main <strong>signals</strong> decode karta hoon.  
-      Kabhi dil ki dhadkan ek rhythm ban jaati hai,  
-      kabhi aankhon ka spark ek research topic.  
-      Knowledge bhi ek <strong>magnetism</strong> hai—  
-      jo samjhega, woh automatically attract hoga.”  
-    </p>
-    <span>— The Student</span>
-  </div>
-</section>
-<section class="about-section animated-section" id="about">
-  <p>
-    On paper I’m a student,  
-    but in reality—a <strong>concept in motion</strong>.  
-    Curiosity flows through me the way current runs through a circuit,  
-    aur har moment ek experiment lagta hai.  
-  </p>
-  <br>
-  <p>
-    Thoda sa <strong>mystery</strong>, thoda sa <strong>logic</strong>,  
-    aur thoda sa woh instinct jo samajh ke bhi explain nahi hota.  
-    Kabhi innocent curiosity, kabhi bold confidence—  
-    bas wahi mera real signature hai.  
-  </p>
-  <br>
-  <p>
-    For me, fashion is not fabric—  
-    it’s a <strong>second language</strong> of psychology & presence.  
-    It carries emotions, triggers senses,  
-    and leaves behind questions jo har kisi ke dimaag mein tik jaati hain.  
-  </p>
-</section>
+    <section class="quote-section animated-section">
+      <img src="3.jpg" alt="A person contemplating a complex problem on a device" loading="lazy" decoding="async">
+      <div class="quote">
+        <p>
+          “Main sirf notes nahi likhta,  
+          main <strong>signals</strong> decode karta hoon.  
+          Kabhi dil ki dhadkan ek rhythm ban jaati hai,  
+          kabhi aankhon ka spark ek research topic.  
+          Knowledge bhi ek <strong>magnetism</strong> hai—  
+          jo samjhega, woh automatically attract hoga.”  
+        </p>
+        <span>— The Student</span>
+      </div>
+    </section>
+    
+    <section class="about-section animated-section" id="about">
+      <p>
+        On paper I’m a student,  
+        but in reality—a <strong>concept in motion</strong>.  
+        Curiosity flows through me the way current runs through a circuit,  
+        aur har moment ek experiment lagta hai.  
+      </p>
+      <br>
+      <p>
+        Thoda sa <strong>mystery</strong>, thoda sa <strong>logic</strong>,  
+        aur thoda sa woh instinct jo samajh ke bhi explain nahi hota.  
+        Kabhi innocent curiosity, kabhi bold confidence—  
+        bas wahi mera real signature hai.  
+      </p>
+      <br>
+      <p>
+        For me, fashion is not fabric—  
+        it’s a <strong>second language</strong> of psychology & presence.  
+        It carries emotions, triggers senses,  
+        and leaves behind questions jo har kisi ke dimaag mein tik jaati hain.  
+      </p>
+    </section>
+        
     <section id="categories" class="animated-section">
         <div class="category-item">
             <div class="category-card">
-                <video autoplay muted loop playsinline src="Video-40.mp4"></video>
+                <video autoplay muted loop playsinline src="3.mp4" loading="lazy" preload="metadata"></video>
                 <a href="#" class="view-video-btn video-overlay-btn"><i class="fas fa-expand"></i> View Full Video</a>
                 <a href="#" class="explore-link video-overlay-btn"><i class="fas fa-arrow-right"></i></a>
             </div>
         </div>
         <div class="category-item">
             <div class="category-card">
-                <video autoplay muted loop playsinline src="Video-72.mp4"></video>
+                <video autoplay muted loop playsinline src="4.mp4" loading="lazy" preload="metadata"></video>
                 <a href="#" class="view-video-btn video-overlay-btn"><i class="fas fa-expand"></i> View Full Video</a>
                 <a href="#" class="explore-link video-overlay-btn"><i class="fas fa-arrow-right"></i></a>
             </div>
         </div>
         <div class="category-item">
             <div class="category-card">
-                <video autoplay muted loop playsinline src="Video-832.mp4"></video>
+                <video autoplay muted loop playsinline src="5.mp4" loading="lazy" preload="metadata"></video>
                 <a href="#" class="view-video-btn video-overlay-btn"><i class="fas fa-expand"></i> View Full Video</a>
                 <a href="#" class="explore-link video-overlay-btn"><i class="fas fa-arrow-right"></i></a>
             </div>
         </div>
-                <div class="category-item">
+        <div class="category-item">
             <div class="category-card">
-                <video autoplay muted loop playsinline src="Video-998.mp4"></video>
+                <video autoplay muted loop playsinline src="6.mp4" loading="lazy" preload="metadata"></video>
                 <a href="#" class="view-video-btn video-overlay-btn"><i class="fas fa-expand"></i> View Full Video</a>
                 <a href="#" class="explore-link video-overlay-btn"><i class="fas fa-arrow-right"></i></a>
             </div>
         </div>
-                <div class="category-item">
+        <div class="category-item">
             <div class="category-card">
-                <video autoplay muted loop playsinline src="https://www.w3schools.com/html/mov_bbb.mp4"></video>
+                <video autoplay muted loop playsinline src="7.mp4" loading="lazy" preload="metadata"></video>
                 <a href="#" class="view-video-btn video-overlay-btn"><i class="fas fa-expand"></i> View Full Video</a>
                 <a href="#" class="explore-link video-overlay-btn"><i class="fas fa-arrow-right"></i></a>
             </div>
         </div>
-                <div class="category-item">
+        <div class="category-item">
             <div class="category-card">
-                <video autoplay muted loop playsinline src="https://www.w3schools.com/howto/rain.mp4"></video>
+                <video autoplay muted loop playsinline src="8.mp4" loading="lazy" preload="metadata"></video>
                 <a href="#" class="view-video-btn video-overlay-btn"><i class="fas fa-expand"></i> View Full Video</a>
                 <a href="#" class="explore-link video-overlay-btn"><i class="fas fa-arrow-right"></i></a>
             </div>
         </div>
-                <div class="category-item">
+        <div class="category-item">
             <div class="category-card">
-                <video autoplay muted loop playsinline src="Video-72.mp4"></video>
+                <video autoplay muted loop playsinline src="9.mp4" loading="lazy" preload="metadata"></video>
                 <a href="#" class="view-video-btn video-overlay-btn"><i class="fas fa-expand"></i> View Full Video</a>
                 <a href="#" class="explore-link video-overlay-btn"><i class="fas fa-arrow-right"></i></a>
             </div>
         </div>
-                <div class="category-item">
+        <div class="category-item">
             <div class="category-card">
-                <video autoplay muted loop playsinline src="Video-40.mp4"></video>
+                <video autoplay muted loop playsinline src="10.mp4" loading="lazy" preload="metadata"></video>
                 <a href="#" class="view-video-btn video-overlay-btn"><i class="fas fa-expand"></i> View Full Video</a>
                 <a href="#" class="explore-link video-overlay-btn"><i class="fas fa-arrow-right"></i></a>
             </div>
         </div>
     </section>
+    <footer class="transparent-footer">
+      <div class="footer-container">
+        <div class="footer-logo" id="footer-logo"><span>M41T</span></div>
+        <div class="footer-main">
+          
+          <div class="footer-tagline" id="footer-tagline">
+            <h4>A Mind in Motion</h4>
+            <p>
+              Not just learning—  
+              but shaping signals, moments, and connections  
+              that leave a pulse even after time moves on.
+            </p>
+          </div>
     
-
-<footer class="transparent-footer">
-  <div class="footer-container">
-    <div class="footer-logo" id="footer-logo"><span>M41T</span></div>
-    <div class="footer-main">
-      
-      <div class="footer-tagline" id="footer-tagline">
-        <h4>A Mind in Motion</h4>
-        <p>
-          Not just learning—  
-          but shaping signals, moments, and connections  
-          that leave a pulse even after time moves on.
-        </p>
-      </div>
-
-      <div class="footer-info">
-        <div class="footer-column" id="footer-locations">
-          <h5>LOCATIONS</h5>
-          <p>TO & CPH</p>
-        </div>
-        <div class="footer-column" id="footer-services">
-          <h5>FOCUS</h5>
-          <ul>
-            <li>Curiosity</li>
-            <li>Identity</li>
-            <li>Digital Flow</li>
-            <li>Human Chemistry</li>
-          </ul>
+          <div class="footer-info">
+            <div class="footer-column" id="footer-locations">
+              <h5>LOCATIONS</h5>
+              <p>TO & CPH</p>
+            </div>
+            <div class="footer-column" id="footer-services">
+              <h5>FOCUS</h5>
+              <ul>
+                <li>Curiosity</li>
+                <li>Identity</li>
+                <li>Digital Flow</li>
+                <li>Human Chemistry</li>
+              </ul>
+            </div>
+          </div>
+    
+          <div class="footer-email" id="footer-email">
+            <a href="mailto:ecosynetwork@gmail.com">HI@M41T.STUDIO</a>
+          </div>
         </div>
       </div>
-
-      <div class="footer-email" id="footer-email">
-        <a href="mailto:ecosynetwork@gmail.com">HI@M41T.STUDIO</a>
+      <div class="footer-lines"></div>
+    </footer>
+    <section id="showcase-intro" class="animated-section">
+      <div class="product-showcase-container">
+          <video id="bg-video" autoplay muted loop playsinline preload="auto"><source src="11.mp4" type="video/mp4"></video>
+          <canvas id="particles"></canvas>
+          <div class="showcase-header">
+              <div class="category-card video-btn motion-effect" data-motion-intensity="20" data-video="12.mp4" title="Global Trends" data-tilt>🌍</div>
+              <a href="https://www.imf.org" class="category-card motion-effect" data-motion-intensity="15" title="Financial Insights" data-tilt target="_blank" rel="noopener noreferrer" style="text-decoration:none; font-size: 2rem;">🏦</a>
+              <div class="category-card video-btn motion-effect" data-motion-intensity="20" data-video="13.mp4" title="Market Growth" data-tilt>📈</div>
+          </div>
+          <div class="showcase-main">
+              <div class="product-tag">Next-Gen Policy Directives</div>
+              <button class="action-button" aria-label="Deploy Initiative"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 12H7"></path><path d="m12 17 5-5-5-5"></path></svg></button>
+          </div>
+          <div class="showcase-footer">
+              <a href="https://ecozymeet.netlify.app/" target="_blank" rel="noopener noreferrer">Ecommerce</a>
+              <a href="https://ecosyatrum.github.io/resumes/" target="_blank" rel="noopener noreferrer">Resume</a>
+              <a href="https://www.imf.org" target="_blank" rel="noopener noreferrer">Normalize</a>
+          </div>
       </div>
-    </div>
-  </div>
-  <div class="footer-lines"></div>
-</footer>
-  </div>
-      <section id="showcase-intro" class="animated-section">
-        <div class="product-showcase-container">
-            <video id="bg-video" autoplay muted loop playsinline><source src="Video-72.mp4" type="video/mp4"></video>
-            <canvas id="particles"></canvas>
-            <div class="showcase-header">
-                <div class="category-card video-btn motion-effect" data-motion-intensity="20" data-video="Video-998.mp4" title="Global Trends" data-tilt>🌍</div>
-                <div class="category-card motion-effect" data-motion-intensity="15" title="Financial Insights" data-tilt><a href="https://www.imf.org" style="text-decoration:none; font-size: 2rem;" target="_blank" rel="noopener">🏦</a></div>
-                <div class="category-card video-btn motion-effect" data-motion-intensity="20" data-video="Video-40.mp4" title="Market Growth" data-tilt>📈</div>
-            </div>
-            <div class="showcase-main">
-                <div class="product-tag">Next-Gen Policy Directives</div>
-                <button class="action-button" aria-label="Deploy Initiative"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 12H7"></path><path d="m12 17 5-5-5-5"></path></svg></button>
-            </div>
-            <div class="showcase-footer">
-                <a href="https://ecozymeet.netlify.app/">Ecommerce</a>
-                <a href="https://ecosyatrum.github.io/resumes/">Resumme</a>
-                <a href="https://www.imf.org">Normalize</a>
-            </div>
-        </div>
     </section>
 
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.7.2/dist/vanilla-tilt.min.js"></script>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
 
-      // --- Preloader and page load animation ---
+      // --- Code Quality: Cache DOM elements for performance ---
       const preloader = document.getElementById('preloader');
       const mainContent = document.getElementById('mainContent');
-      
+      const cursorFollower = document.querySelector('.cursor-follower');
+      const header = document.getElementById('header');
+      const openMenuBtn = document.getElementById("openMenu");
+      const closeMenuBtn = document.getElementById("closeMenu");
+      const menuOverlay = document.getElementById("menuOverlay");
+      const menuLinks = menuOverlay.querySelectorAll('a');
+
+      // --- Preloader and page load animation ---
       window.addEventListener('load', () => {
         if (preloader) {
           preloader.style.opacity = '0';
@@ -682,70 +706,53 @@
           mainContent.classList.add('loaded');
         }
         setupHeroTextAnimation();
-        initDeviceMotion(); // Initialize motion effects after page loads
+        initDeviceMotion();
       });
 
-      // --- New: Device Motion Functionality ---
+      // --- Device Motion Functionality ---
       function initDeviceMotion() {
         const motionElements = document.querySelectorAll('.motion-effect');
         if (motionElements.length === 0) return;
 
         const handleOrientation = (event) => {
-          // beta: front-back tilt (-180 to 180)
-          // gamma: left-right tilt (-90 to 90)
           const beta = event.beta; 
           const gamma = event.gamma;
-
           motionElements.forEach(el => {
             const intensity = parseFloat(el.dataset.motionIntensity) || 10;
-            const x = (gamma / 90) * intensity; // Normalize gamma and apply intensity
-            const y = (beta / 180) * intensity; // Normalize beta and apply intensity
-            
-            gsap.to(el, {
-              x: x,
-              y: y,
-              duration: 0.5,
-              ease: 'power1.out'
-            });
+            const x = (gamma / 90) * intensity;
+            const y = (beta / 180) * intensity;
+            gsap.to(el, { x: x, y: y, duration: 0.5, ease: 'power1.out' });
           });
         };
 
-        // Standard event listener
         if (window.DeviceOrientationEvent) {
-            // iOS 13+ requires user permission
             if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-                const ctaButton = document.querySelector('.cta-button');
-                if (ctaButton) {
-                    ctaButton.addEventListener('click', () => {
-                        DeviceOrientationEvent.requestPermission()
-                            .then(permissionState => {
-                                if (permissionState === 'granted') {
-                                    window.addEventListener('deviceorientation', handleOrientation);
-                                }
-                            })
-                            .catch(console.error);
-                    });
-                }
+                document.body.addEventListener('click', function requestPermission() {
+                    DeviceOrientationEvent.requestPermission()
+                        .then(permissionState => {
+                            if (permissionState === 'granted') {
+                                window.addEventListener('deviceorientation', handleOrientation);
+                            }
+                        })
+                        .catch(console.error);
+                    // Remove listener after first click to avoid repeated requests
+                    document.body.removeEventListener('click', requestPermission);
+                });
             } else {
-                // For other browsers that don't require permission
                 window.addEventListener('deviceorientation', handleOrientation);
             }
         }
       }
 
-
       // --- Hero Text Animation ---
       function setupHeroTextAnimation() {
         const heroTitle = document.querySelector('.hero-title');
         if (!heroTitle) return;
-
         const content = heroTitle.innerHTML;
         const textParts = content.split(/<img.*?>/g);
         const images = [...heroTitle.querySelectorAll('.inline-img')];
-        
         heroTitle.innerHTML = '';
         let imageIndex = 0;
-
         textParts.forEach((text, index) => {
             const words = text.trim().split(/\s+/);
             words.forEach(word => {
@@ -766,14 +773,12 @@
                 imageIndex++;
             }
         });
-
         heroTitle.querySelectorAll('.char, .inline-img').forEach((el, index) => {
             el.style.transitionDelay = `${index * 0.04 + 0.5}s`;
         });
       }
 
       // --- Custom Cursor Follower ---
-      const cursorFollower = document.querySelector('.cursor-follower');
       if (cursorFollower) {
         window.addEventListener('mousemove', e => {
           gsap.to(cursorFollower, { duration: 0.3, x: e.clientX, y: e.clientY, ease: 'power2.out' });
@@ -799,7 +804,6 @@
       sections.forEach(section => { if (section) observer.observe(section); });
 
       // --- Fixed Header on Scroll ---
-      const header = document.getElementById('header');
       if (header) {
         window.addEventListener('scroll', () => {
           header.classList.toggle('scrolled', window.scrollY > 50);
@@ -807,30 +811,34 @@
       }
 
       // --- Menu Overlay Functionality ---
-      const openMenu = document.getElementById("openMenu");
-      const closeMenu = document.getElementById("closeMenu");
-      const menuOverlay = document.getElementById("menuOverlay");
-      const menuLinks = menuOverlay.querySelectorAll('a');
-
       function toggleMenu(show) {
+        const isActive = menuOverlay.classList.contains("active");
+        if (show === isActive) return;
+
         if (show) {
             menuOverlay.classList.add("active");
+            menuOverlay.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
         } else {
             menuOverlay.classList.remove("active");
+            menuOverlay.setAttribute('aria-hidden', 'true');
             document.body.style.overflow = '';
         }
       }
-      openMenu.addEventListener("click", () => toggleMenu(true));
-      closeMenu.addEventListener("click", () => toggleMenu(false));
+      openMenuBtn.addEventListener("click", () => toggleMenu(true));
+      closeMenuBtn.addEventListener("click", () => toggleMenu(false));
       menuLinks.forEach(link => link.addEventListener('click', () => toggleMenu(false)));
-
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && menuOverlay.classList.contains('active')) {
+          toggleMenu(false);
+        }
+      });
 
       // --- Client Video Slider ---
       const clientCards = [
-        {video: "Video-40.mp4", name: "VENGEAN"},
-        {video: "Video-72.mp4", name: "LEARN"},
-        {video: "Video-998.mp4", name: "BRUTAL"}
+        {video: "15.mp4", name: "VENGEAN"},
+        {video: "16.mp4", name: "LEARN"},
+        {video: "17.mp4", name: "BRUTAL"}
       ];
       let currentClientIndex = 0;
       const cardVideo = document.querySelector(".client-card video");
@@ -855,7 +863,7 @@
         currentClientIndex = (currentClientIndex + 1) % clientCards.length;
         updateClientCard();
       });
-      
+          
       // --- Showcase Video Switching ---
       const videoCards = document.querySelectorAll('#showcase-intro .video-btn');
       const bgVideo = document.querySelector('#showcase-intro #bg-video');
@@ -879,13 +887,11 @@
       if (canvas) {
         const ctx = canvas.getContext('2d');
         let particles = [];
-
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         }
         resizeCanvas();
-
         for(let i=0; i<80; i++){
           particles.push({
             x: Math.random() * canvas.width, y: Math.random() * canvas.height,
@@ -896,10 +902,8 @@
         function animateParticles(){
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           particles.forEach(p => {
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-            ctx.fillStyle = 'rgba(255,255,255,0.3)';
-            ctx.fill();
+            ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+            ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.fill();
             p.x += p.dx; p.y += p.dy;
             if(p.x < 0 || p.x > canvas.width) p.dx *= -1;
             if(p.y < 0 || p.y > canvas.height) p.dy *= -1;
@@ -927,7 +931,6 @@
       });
 
       // --- Footer GSAP Animations ---
-      // Adding scroll triggers for better animation timing
       if (window.gsap && window.ScrollTrigger) {
           gsap.registerPlugin(ScrollTrigger);
           gsap.from("#footer-logo span", { scrollTrigger: { trigger: "#footer-logo", start: "top 90%" }, y: -100, opacity: 0, duration: 1, ease: "power4.out" });
@@ -935,8 +938,8 @@
           gsap.from("#footer-locations, #footer-services", { scrollTrigger: { trigger: "#footer-info", start: "top 90%" }, y: 80, opacity: 0, stagger: 0.3, duration: 1, ease: "back.out(1.5)" });
           gsap.from("#footer-email", { scrollTrigger: { trigger: "#footer-email", start: "top 90%" }, scale: 0.5, opacity: 0, duration: 1, ease: "elastic.out(1, 0.5)" });
       }
-
     });
   </script>
 </body>
 </html>
+  
