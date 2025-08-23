@@ -101,53 +101,28 @@
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       object-fit: cover; z-index: -3; filter: brightness(0.4);
     }
-/* On scroll → glass effect + shrink */
-header.scrolled {
-  background-color: rgba(10, 10, 10, 0.55);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-  height: calc(var(--header-height) - 10px);
-  padding: 0 1.5rem;
-  box-shadow: 0 2px 25px rgba(0,0,0,0.3);
-}
 
-/* Logo */
-header .logo {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: #fff;
-  text-decoration: none;
-  letter-spacing: 1px;
-  transition: color 0.3s, text-shadow 0.4s ease;
-}
-header .logo:hover {
-  color: #0ff;
-  text-shadow: 0 0 10px #0ff, 0 0 25px #0ff, 0 0 40px #0ff;
-}
 
-/* Optional: add animated gradient border under header */
-header.scrolled::after {
-  content: "";
-  position: absolute;
-  bottom: 0; left: 0;
-  width: 100%; height: 2px;
-  background: linear-gradient(90deg, #0ff, #f0f, #0ff);
-  background-size: 200% 100%;
-  animation: border-flow 3s linear infinite;
-}
 
-@keyframes border-flow {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 200% 50%; }
-}
-  
+
+
     /* --- Header & Menu --- */
+header {
+position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
+display: flex; justify-content: space-between; align-items: center;
+padding: 0 2rem; z-index: 800;
+transition: background-color 0.4s ease, backdrop-filter 0.4s ease, border-bottom 0.4s ease;
+}
+header.scrolled {
+background-color: rgba(10, 10, 10, 0.5); backdrop-filter: blur(10px);
+-webkit-backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+header .logo { font-size: 1.2rem; font-weight: 700; color: #fff; text-decoration: none; }
 
+    
 
-
-
-    .menu-btn {  
+    /* --- Header & Menu --- */
+.menu-btn {  
   border: 1px solid #fff;  
   padding: 10px 28px;  
   border-radius: 40px;  
@@ -195,23 +170,7 @@ header.scrolled::after {
   transition: all 0.5s ease;  
   opacity: 0;  
   transform: translateY(50px) scale(0.9);  
-  animation: menu-item-fade-header {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; 
-  height: var(--header-height);
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center;
-  padding: 0 2rem; 
-  z-index: 800;
-
-  transition: background-color 0.4s ease, 
-              backdrop-filter 0.4s ease, 
-              border-bottom 0.4s ease,
-              height 0.4s ease, 
-              padding 0.4s ease;  
-  in 0.6s ease forwards;  
+  animation: menu-item-fade-in 0.6s ease forwards;  
   letter-spacing: 4px;  
 }  
 .menu-overlay.active a:nth-child(1) { animation-delay: 0s; }  
@@ -272,22 +231,10 @@ header.scrolled::after {
   transform: translateY(-6px) scale(1.2);  
   text-shadow: 0 0 12px #0ff;  
 }
-    /* --- General Section Styling & Animation --- */
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+    
 
 
 
