@@ -698,58 +698,56 @@
 .ro-image {
   position: relative;
   background: url("1.jpg") no-repeat center center/cover;
-  height: 60vh;
+  height: 75vh;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .ro-overlay {
-  background: rgba(0, 0, 0, 0.4); /* dark overlay */
+  background: linear-gradient(
+    rgba(0, 0, 0, 0.55), 
+    rgba(0, 0, 0, 0.35)
+  );
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  backdrop-filter: blur(10px);
 }
 
 .ro-overlay h1 {
   color: #fff;
-  font-size: 34px;
-  font-weight: bold;
-  letter-spacing: 2px;
+  font-size: 48px;
+  font-weight: 800;
+  letter-spacing: 3px;
   text-transform: uppercase;
   text-align: center;
+  text-shadow: 0 0 25px rgba(0, 255, 153, 0.8),
+               0 0 40px rgba(0, 200, 255, 0.6);
+  animation: fadeInGlow 1.5s ease;
 }
 
-/* ===== TOUR DATES SECTION ===== */
+/* ===== TOUR SECTION ===== */
 .tour-section {
   background: transparent;
   color: #fff;
-  padding: 60px 20px;
-  font-family: "Arial", sans-serif;
+  padding: 80px 20px;
+  font-family: "Poppins", sans-serif;
   text-align: center;
 }
 
 .tour-header p {
-  color: #ccc;
-  font-size: 16px;
-  margin-bottom: 15px;
-}
-
-.tour-filter {
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
-  padding: 10px 15px;
-  border-radius: 6px;
-  font-size: 14px;
+  color: #aaa;
+  font-size: 18px;
   margin-bottom: 30px;
-  backdrop-filter: blur(6px);
+  letter-spacing: 1.5px;
 }
 
+/* ===== TOUR CARDS ===== */
 .tour-list {
-  max-width: 600px;
+  max-width: 650px;
   margin: 0 auto;
 }
 
@@ -757,92 +755,180 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 15px;
-  backdrop-filter: blur(8px);
-  transition: transform 0.3s ease, background 0.3s ease;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 14px;
+  padding: 14px 18px;                /* smaller padding */
+  margin-bottom: 16px;               /* less gap between cards */
+  backdrop-filter: blur(14px) saturate(160%);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4);
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tour-card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 180deg,
+    rgba(0, 255, 153, 0.2),
+    rgba(0, 200, 255, 0.2),
+    transparent
+  );
+  transform: rotate(25deg);
+  transition: opacity 0.4s ease;
+  opacity: 0;
+  z-index: 0;
+}
+
+.tour-card:hover::before {
+  opacity: 1;
 }
 
 .tour-card:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: translateY(-5px);
+  transform: translateY(-6px) scale(1.04) rotateX(2deg);
+  box-shadow: 0 12px 28px rgba(0, 255, 153, 0.5);
 }
 
+/* ===== CARD CONTENT (Smaller) ===== */
 .tour-date {
   text-align: left;
   flex: 1;
-  font-size: 14px;
-  font-weight: 600;
-  color: #b3ffb3;
+  font-size: 13px;         /* smaller */
+  font-weight: 700;
+  color: #00ffcc;
+  z-index: 1;
 }
 
 .tour-info {
   flex: 2;
   text-align: left;
+  z-index: 1;
 }
 
 .tour-info h3 {
-  font-size: 18px;
+  font-size: 17px;         /* smaller title */
   margin: 0;
+  font-weight: 600;
+  letter-spacing: 1px;
 }
 
 .tour-info .venue {
-  color: #ccc;
-  font-size: 14px;
+  color: #bbb;
+  font-size: 12px;         /* smaller text */
+  margin-top: 5px;
 }
 
 .tour-action {
   flex: 1;
   text-align: right;
+  z-index: 1;
 }
 
 .ticket-btn {
-  background: rgba(255, 255, 255, 0.8);
-  color: #000;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 8px;
-  font-weight: bold;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(0, 255, 153, 0.5);
+  color: #00ffcc;
+  padding: 8px 16px;       /* smaller button */
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
-  transition: all 0.3s ease;
+  transition: all 0.35s ease;
+  box-shadow: 0 0 10px rgba(0, 255, 153, 0.25);
 }
 
 .ticket-btn:hover {
-  background: #00ff99;
+  background: linear-gradient(135deg, #00ff99, #00e6ff);
   color: #000;
+  box-shadow: 0 0 20px rgba(0, 255, 200, 0.9);
+  transform: scale(1.05);
 }
 
 /* ===== SOCIAL LINKS ===== */
 .tour-socials {
-  margin-top: 40px;
+  margin-top: 60px;
 }
 
 .tour-socials p {
-  font-size: 14px;
-  margin-bottom: 10px;
+  font-size: 15px;
+  margin-bottom: 15px;
   color: #ccc;
+  letter-spacing: 1px;
 }
 
 .social-links {
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 
 .social-links a {
+  font-size: 18px;
   color: #fff;
   text-decoration: none;
-  font-weight: bold;
-  transition: color 0.3s ease;
+  font-weight: 600;
+  padding: 12px 20px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.social-links a::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg, 
+    transparent, 
+    rgba(0, 255, 153, 0.4), 
+    transparent
+  );
+  transition: all 0.5s ease;
+}
+
+.social-links a:hover::after {
+  left: 100%;
 }
 
 .social-links a:hover {
-  color: #00ff99;
+  color: #000;
+  background: linear-gradient(135deg, #00ffcc, #00e6ff);
+  border-color: transparent;
+  box-shadow: 0 0 20px rgba(0, 255, 200, 0.8);
+  transform: translateY(-4px);
 }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInGlow {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+    text-shadow: none;
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    text-shadow: 0 0 25px rgba(0, 255, 153, 0.8),
+                 0 0 40px rgba(0, 200, 255, 0.6);
+  }
+}
+      
       </style>
 </head>
 <body>
@@ -1093,6 +1179,178 @@
             </div>
         </div>
     </section>
+
+
+
+
+
+
+
+
+
+    <!-- ===== HERO IMAGE SECTION ===== -->
+<section class="ro-image">
+  <div class="ro-overlay">
+    <h1>SEE M41T LIVE</h1>
+  </div>
+</section>
+
+<!-- ===== TOUR DATES SECTION ===== -->
+<section class="tour-section">
+  <div class="tour-header">
+    <p>Connect with us</p>
+  </div>
+  
+  <div class="tour-list">
+    <!-- Instagram -->
+    <div class="tour-card">
+      <div class="tour-date">
+        <span class="day">Content</span>
+      </div>
+      <div class="tour-info">
+        <h3>Instagram</h3>
+        <p class="venue">@yourhandle</p>
+      </div>
+      <div class="tour-action">
+        <a href="https://instagram.com/yourhandle" class="ticket-btn" target="_blank">Follow</a>
+      </div>
+    </div>
+
+    <!-- Facebook -->
+    <div class="tour-card">
+      <div class="tour-date">
+        <span class="day">Content</span>
+      </div>
+      <div class="tour-info">
+        <h3>Facebook</h3>
+        <p class="venue">Your Page</p>
+      </div>
+      <div class="tour-action">
+        <a href="https://facebook.com/yourpage" class="ticket-btn" target="_blank">Like</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="tour-list">
+    <!-- Twitter/X -->
+    <div class="tour-card">
+      <div class="tour-date">
+        <span class="day">Content</span>
+      </div>
+      <div class="tour-info">
+        <h3>Twitter (X)</h3>
+        <p class="venue">@yourhandle</p>
+      </div>
+      <div class="tour-action">
+        <a href="https://twitter.com/yourhandle" class="ticket-btn" target="_blank">Follow</a>
+      </div>
+    </div>
+
+    <!-- YouTube -->
+    <div class="tour-card">
+      <div class="tour-date">
+        <span class="day">Video</span>
+      </div>
+      <div class="tour-info">
+        <h3>YouTube</h3>
+        <p class="venue">Your Channel</p>
+      </div>
+      <div class="tour-action">
+        <a href="https://youtube.com/@yourchannel" class="ticket-btn" target="_blank">Subscribe</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="tour-list">
+    <!-- TikTok -->
+    <div class="tour-card">
+      <div class="tour-date">
+        <span class="day">Video</span>
+      </div>
+      <div class="tour-info">
+        <h3>TikTok</h3>
+        <p class="venue">@yourhandle</p>
+      </div>
+      <div class="tour-action">
+        <a href="https://tiktok.com/@yourhandle" class="ticket-btn" target="_blank">Follow</a>
+      </div>
+    </div>
+
+    <!-- LinkedIn -->
+    <div class="tour-card">
+      <div class="tour-date">
+        <span class="day">Content</span>
+      </div>
+      <div class="tour-info">
+        <h3>LinkedIn</h3>
+        <p class="venue">Your Name</p>
+      </div>
+      <div class="tour-action">
+        <a href="https://linkedin.com/in/yourprofile" class="ticket-btn" target="_blank">Connect</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="tour-list">
+    <!-- Snapchat -->
+    <div class="tour-card">
+      <div class="tour-date">
+        <span class="day">Story</span>
+      </div>
+      <div class="tour-info">
+        <h3>Snapchat</h3>
+        <p class="venue">@yourhandle</p>
+      </div>
+      <div class="tour-action">
+        <a href="https://www.snapchat.com/add/yourhandle" class="ticket-btn" target="_blank">Add</a>
+      </div>
+    </div>
+
+    <!-- Discord -->
+    <div class="tour-card">
+      <div class="tour-date">
+        <span class="day">Chat</span>
+      </div>
+      <div class="tour-info">
+        <h3>Discord</h3>
+        <p class="venue">Your Server</p>
+      </div>
+      <div class="tour-action">
+        <a href="https://discord.gg/yourinvite" class="ticket-btn" target="_blank">Join</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="tour-list">
+    <!-- WhatsApp -->
+    <div class="tour-card">
+      <div class="tour-date">
+        <span class="day">Message</span>
+      </div>
+      <div class="tour-info">
+        <h3>WhatsApp</h3>
+        <p class="venue">+91 9876543210</p>
+      </div>
+      <div class="tour-action">
+        <a href="https://wa.me/919876543210" class="ticket-btn" target="_blank">Chat</a>
+      </div>
+    </div>
+
+    <!-- Telegram -->
+    <div class="tour-card">
+      <div class="tour-date">
+        <span class="day">Message</span>
+      </div>
+      <div class="tour-info">
+        <h3>Telegram</h3>
+        <p class="venue">@yourhandle</p>
+      </div>
+      <div class="tour-action">
+        <a href="https://t.me/yourhandle" class="ticket-btn" target="_blank">Join</a>
+      </div>
+    </div>
+  </div>
+</section>
     <footer class="transparent-footer">
       <div class="footer-container">
         <div class="footer-logo" id="footer-logo"><span>M41T</span></div>
@@ -1128,135 +1386,11 @@
           </div>
         </div>
       </div>
-      <div class="footer-lines"></div>
     </footer>
 
-    <!-- ===== HERO IMAGE SECTION ===== -->
-<section class="ro-image">
-  <div class="ro-overlay">
-    <h1>SEE M41T LIVE</h1>
-  </div>
-</section>
+    
 
-<!-- ===== TOUR DATES SECTION ===== -->
-<section class="tour-section">
-  <div class="tour-header">
-    <p>Tour dates</p>
-    <select class="tour-filter">
-      <option>All locations</option>
-      <option>UDHNA GT</option>
-      <option>SURAT GT</option>
-    </select>
-  </div>
-
-  <div class="tour-list">
-    <!-- Event Card -->
-    <div class="tour-card">
-      <div class="tour-date">
-        <span class="day">Content</span>
-      </div>
-      <div class="tour-info">
-        <h3>Instagram</h3>
-        <p class="venue">influnce</p>
-      </div>
-      <div class="tour-action">
-        <!-- Replace link with real ticket page -->
-        <a href="https://www.songkick.com/concerts/bristol" class="ticket-btn" target="_blank">Tickets</a>
-      </div>
-    </div>
-
-    <!-- Event Card -->
-    <div class="tour-card">
-      <div class="tour-date">
-        <span class="day">Video</span>
-        <span class="time">7:00 PM</span>
-      </div>
-      <div class="tour-info">
-        <h3>Brighton, UK</h3>
-        <p class="venue">ALPHABET</p>
-      </div>
-      <div class="tour-action">
-        <!-- Replace link with real ticket page -->
-        <a href="https://www.songkick.com/concerts/brighton" class="ticket-btn" target="_blank">Tickets</a>
-      </div>
-    </div>
-  </div>
-  <div class="tour-list">
-    <!-- Event Card -->
-    <div class="tour-card">
-      <div class="tour-date">
-        <span class="day">Content</span>
-      </div>
-      <div class="tour-info">
-        <h3>Instagram</h3>
-        <p class="venue">influnce</p>
-      </div>
-      <div class="tour-action">
-        <!-- Replace link with real ticket page -->
-        <a href="https://www.songkick.com/concerts/bristol" class="ticket-btn" target="_blank">Tickets</a>
-      </div>
-    </div>
-
-    <!-- Event Card -->
-    <div class="tour-card">
-      <div class="tour-date">
-        <span class="day">Video</span>
-        <span class="time">7:00 PM</span>
-      </div>
-      <div class="tour-info">
-        <h3>Brighton, UK</h3>
-        <p class="venue">ALPHABET</p>
-      </div>
-      <div class="tour-action">
-        <!-- Replace link with real ticket page -->
-        <a href="https://www.songkick.com/concerts/brighton" class="ticket-btn" target="_blank">Tickets</a>
-      </div>
-    </div>
-  </div>
-  <div class="tour-list">
-    <!-- Event Card -->
-    <div class="tour-card">
-      <div class="tour-date">
-        <span class="day">Content</span>
-      </div>
-      <div class="tour-info">
-        <h3>Instagram</h3>
-        <p class="venue">influnce</p>
-      </div>
-      <div class="tour-action">
-        <!-- Replace link with real ticket page -->
-        <a href="https://www.songkick.com/concerts/bristol" class="ticket-btn" target="_blank">Tickets</a>
-      </div>
-    </div>
-
-    <!-- Event Card -->
-    <div class="tour-card">
-      <div class="tour-date">
-        <span class="day">Video</span>
-        <span class="time">7:00 PM</span>
-      </div>
-      <div class="tour-info">
-        <h3>Brighton, UK</h3>
-        <p class="venue">ALPHABET</p>
-      </div>
-      <div class="tour-action">
-        <!-- Replace link with real ticket page -->
-        <a href="https://www.songkick.com/concerts/brighton" class="ticket-btn" target="_blank">Tickets</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== SOCIAL LINKS ===== -->
-  <div class="tour-socials">
-    <p>M41T DO NOTHING</p>
-    <div class="social-links">
-      <a href="https://facebook.com/yourpage" target="_blank">***</a>
-      <a href="https://instagram.com/yourprofile" target="_blank">***</a>
-      <a href="https://twitter.com/yourprofile" target="_blank">***</a>
-      <a href="https://youtube.com/yourchannel" target="_blank">***</a>
-    </div>
-  </div>
-</section>
+  
         
 
 
